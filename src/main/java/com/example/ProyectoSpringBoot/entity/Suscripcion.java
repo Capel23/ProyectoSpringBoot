@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -80,14 +81,16 @@ public class Suscripcion {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    // Relación N:1 con Plan
+    // Relación N:1 con Plan (no auditada)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plan_id", nullable = false)
+    @NotAudited
     private Plan plan;
 
-    // Relación 1:N con Factura
+    // Relación 1:N con Factura (no auditada)
     @OneToMany(mappedBy = "suscripcion", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
+    @NotAudited
     private List<Factura> facturas = new ArrayList<>();
 
     public boolean estaActiva() {
