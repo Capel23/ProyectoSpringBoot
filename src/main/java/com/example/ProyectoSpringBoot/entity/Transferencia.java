@@ -1,13 +1,11 @@
 package com.example.ProyectoSpringBoot.entity;
 
 import com.example.ProyectoSpringBoot.enums.TipoMetodoPago;
-import com.example.ProyectoSpringBoot.util.EncriptadorAES;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
 
-// Transferencia bancaria - IBAN encriptado con AES
 @Entity
 @DiscriminatorValue("TRANSFERENCIA")
 @Audited
@@ -20,7 +18,6 @@ public class Transferencia extends MetodoPago {
     private String nombreBanco;
 
     @NotBlank(message = "IBAN obligatorio")
-    @Convert(converter = EncriptadorAES.class)
     @Column(name = "iban", length = 255)
     private String iban;
 

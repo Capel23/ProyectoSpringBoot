@@ -1,7 +1,6 @@
 package com.example.ProyectoSpringBoot.entity;
 
 import com.example.ProyectoSpringBoot.enums.TipoMetodoPago;
-import com.example.ProyectoSpringBoot.util.EncriptadorAES;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -9,7 +8,6 @@ import org.hibernate.envers.Audited;
 
 import java.time.YearMonth;
 
-// Tarjeta de crédito - datos sensibles encriptados con AES
 @Entity
 @DiscriminatorValue("TARJETA_CREDITO")
 @Audited
@@ -22,7 +20,6 @@ public class TarjetaCredito extends MetodoPago {
     private String nombreTitular;
 
     @NotBlank(message = "Número de tarjeta obligatorio")
-    @Convert(converter = EncriptadorAES.class)
     @Column(name = "numero_tarjeta", length = 255)
     private String numeroTarjeta;
 
@@ -36,7 +33,6 @@ public class TarjetaCredito extends MetodoPago {
     @Column(name = "anio_expiracion")
     private Integer anioExpiracion;
 
-    @Convert(converter = EncriptadorAES.class)
     @Column(name = "cvv", length = 255)
     private String cvv;
 
