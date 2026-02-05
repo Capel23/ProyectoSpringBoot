@@ -37,7 +37,7 @@ body {
 }
 
 .btn-primary {
-  @apply btn bg-primary-600 text-white hover:bg-primary-700;
+  @apply btn bg-[#0081C8] text-white hover:bg-[#0070af];
 }
 
 .btn-secondary {
@@ -45,5 +45,5 @@ body {
 }
 
 .btn-danger {
-  @apply btn bg-red-600 text-white hover:bg-red-700;
+  @apply btn bg-[#EE334E] text-white hover:bg-red-700;
 }

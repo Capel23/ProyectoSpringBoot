@@ -7,17 +7,25 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Colores Juegos Olímpicos
+        olympic: {
+          blue: '#0081C8',
+          yellow: '#FCB131',
+          black: '#1D1D1B',
+          green: '#00A651',
+          red: '#EE334E',
+        },
         primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
+          50: '#e6f4fb',
+          100: '#cce9f7',
+          200: '#99d3ef',
+          300: '#66bde7',
+          400: '#33a7df',
+          500: '#0081C8',
+          600: '#0070af',
+          700: '#005f96',
+          800: '#004e7d',
+          900: '#003d64',
         }
       }
     },

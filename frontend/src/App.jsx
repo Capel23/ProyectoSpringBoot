@@ -1,10 +1,31 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Layout from './components/Layout'
-import Home from './pages/Home'
-import UsuariosPage from './pages/UsuariosPage'
-import PlanesPage from './pages/PlanesPage'
+import { useState } from 'react'
+// COMENTADO - Código anterior del sistema completo
+// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+// import Layout from './components/Layout'
+// import Home from './pages/Home'
+// import UsuariosPage from './pages/UsuariosPage'
+// import PlanesPage from './pages/PlanesPage'
+
+// NUEVO - Vista simplificada de Login y Dashboard
+import LoginPage from './pages/LoginPage'
+import DashboardPage from './pages/DashboardPage'
 
 function App() {
+  const [userData, setUserData] = useState(null);
+
+  const handleLogin = (data) => {
+    setUserData(data);
+  };
+
+  // Si no hay usuario logueado, mostrar Login
+  // Si hay usuario logueado, mostrar Dashboard
+  return userData ? (
+    <DashboardPage userData={userData} />
+  ) : (
+    <LoginPage onLogin={handleLogin} />
+  );
+
+  /* COMENTADO - Código anterior del sistema completo con rutas
   return (
     <Router>
       <Layout>
@@ -16,6 +37,7 @@ function App() {
       </Layout>
     </Router>
   )
+  */
 }
 
 export default App
