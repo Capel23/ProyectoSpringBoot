@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle Factura - SaaS Platform</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        nav { background: #333; padding: 10px 20px; margin-bottom: 20px; }
+        nav a { color: white; text-decoration: none; margin-right: 20px; font-weight: bold; }
+        nav a:hover { text-decoration: underline; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: #333; }
+        .card { background: white; padding: 20px; margin: 10px 0; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .btn { display: inline-block; padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 14px; }
+        .btn:hover { background: #0056b3; }
+        .label { font-weight: bold; color: #555; display: inline-block; width: 180px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/planes}">Planes</a>
+        <a th:href="@{/usuarios}">Usuarios</a>
+        <a th:href="@{/suscripciones}">Suscripciones</a>
+        <a th:href="@{/facturas}">Facturas</a>
+    </nav>
+    <div class="container">
+        <h1>Detalle de Factura #<span th:text="${factura.id}"></span></h1>
+
+        <div class="card">
+            <p><span class="label">Concepto:</span> <span th:text="${factura.concepto}"></span></p>
+            <p><span class="label">Monto:</span> <span th:text="'€' + ${factura.monto}"></span></p>
+            <p><span class="label">Estado:</span> <span th:text="${factura.estado}"></span></p>
+            <p><span class="label">Fecha Emisión:</span> <span th:text="${factura.fechaEmision}"></span></p>
+            <p><span class="label">Fecha Vencimiento:</span> <span th:text="${factura.fechaVencimiento}"></span></p>
+            <p><span class="label">Es Prorrateo:</span> <span th:text="${factura.esProrrateo} ? 'Sí' : 'No'"></span></p>
+            <p><span class="label">Usuario:</span> <span th:text="${factura.suscripcion.usuario.nombre + ' ' + factura.suscripcion.usuario.apellido}"></span></p>
+            <p><span class="label">Plan:</span> <span th:text="${factura.suscripcion.plan.nombre}"></span></p>
+        </div>
+
+        <a th:href="@{/facturas}" class="btn">Volver</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Suscripciones - SaaS Platform</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        nav { background: #333; padding: 10px 20px; margin-bottom: 20px; }
+        nav a { color: white; text-decoration: none; margin-right: 20px; font-weight: bold; }
+        nav a:hover { text-decoration: underline; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: #333; }
+        .btn { display: inline-block; padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 14px; }
+        .btn:hover { background: #0056b3; }
+        .btn-success { background: #28a745; }
+        .btn-danger { background: #dc3545; }
+        .alert { padding: 10px 15px; margin: 10px 0; border-radius: 4px; }
+        .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; background: white; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; font-weight: bold; }
+        .estado-activa { color: #28a745; font-weight: bold; }
+        .estado-cancelada { color: #dc3545; font-weight: bold; }
+        .estado-morosa { color: #ffc107; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/planes}">Planes</a>
+        <a th:href="@{/usuarios}">Usuarios</a>
+        <a th:href="@{/suscripciones}">Suscripciones</a>
+        <a th:href="@{/facturas}">Facturas</a>
+    </nav>
+    <div class="container">
+        <h1>Suscripciones</h1>
+
+        <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+
+        <form th:action="@{/suscripciones/generar-facturas}" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-success">Generar Facturas Automáticas</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Plan</th>
+                    <th>Estado</th>
+                    <th>Fecha Inicio</th>
+                    <th>Próxima Factura</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="s : ${suscripciones}">
+                    <td th:text="${s.id}"></td>
+                    <td th:text="${s.usuario.nombre + ' ' + s.usuario.apellido}"></td>
+                    <td th:text="${s.plan.nombre} + ' (€' + ${s.plan.precioMensual} + ')'"></td>
+                    <td>
+                        <span th:text="${s.estado}"
+                              th:classappend="${s.estado.name() == 'ACTIVA'} ? 'estado-activa' : (${s.estado.name() == 'CANCELADA'} ? 'estado-cancelada' : 'estado-morosa')">
+                        </span>
+                    </td>
+                    <td th:text="${s.fechaInicio}"></td>
+                    <td th:text="${s.proximaFechaFacturacion}"></td>
+                    <td>
+                        <a th:href="@{/suscripciones/{id}(id=${s.usuario.id})}" class="btn">Ver</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(suscripciones)}">
+                    <td colspan="7" style="text-align:center; color:#999;">No hay suscripciones</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

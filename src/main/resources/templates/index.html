@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SaaS Platform - Inicio</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        nav { background: #333; padding: 10px 20px; margin-bottom: 20px; }
+        nav a { color: white; text-decoration: none; margin-right: 20px; font-weight: bold; }
+        nav a:hover { text-decoration: underline; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1, h2 { color: #333; }
+        .card { background: white; padding: 20px; margin: 10px 0; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .btn { display: inline-block; padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; }
+        .btn:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/planes}">Planes</a>
+        <a th:href="@{/usuarios}">Usuarios</a>
+        <a th:href="@{/suscripciones}">Suscripciones</a>
+        <a th:href="@{/facturas}">Facturas</a>
+    </nav>
+    <div class="container">
+        <h1>Plataforma SaaS - Core</h1>
+        <div class="card">
+            <h2>Panel de Administración</h2>
+            <p>Bienvenido al core de la plataforma SaaS. Desde aquí puedes gestionar:</p>
+            <ul>
+                <li><a th:href="@{/planes}">Planes</a> — Gestionar niveles Basic, Premium, Enterprise</li>
+                <li><a th:href="@{/usuarios}">Usuarios</a> — Registro y gestión de usuarios</li>
+                <li><a th:href="@{/suscripciones}">Suscripciones</a> — Ver suscripciones activas y cambiar planes</li>
+                <li><a th:href="@{/facturas}">Facturas</a> — Consultar facturas generadas</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h2>Acciones Rápidas</h2>
+            <a th:href="@{/usuarios/registro}" class="btn">Registrar Usuario</a>
+            <a th:href="@{/planes/nuevo}" class="btn">Crear Plan</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle Suscripción - SaaS Platform</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        nav { background: #333; padding: 10px 20px; margin-bottom: 20px; }
+        nav a { color: white; text-decoration: none; margin-right: 20px; font-weight: bold; }
+        nav a:hover { text-decoration: underline; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1, h2 { color: #333; }
+        .card { background: white; padding: 20px; margin: 10px 0; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .btn { display: inline-block; padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 14px; }
+        .btn:hover { background: #0056b3; }
+        .btn-danger { background: #dc3545; }
+        .btn-success { background: #28a745; }
+        .alert { padding: 10px 15px; margin: 10px 0; border-radius: 4px; }
+        .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .alert-danger { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .label { font-weight: bold; color: #555; display: inline-block; width: 180px; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; background: white; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; font-weight: bold; }
+        select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .prorrateo { background: #fff3cd; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/planes}">Planes</a>
+        <a th:href="@{/usuarios}">Usuarios</a>
+        <a th:href="@{/suscripciones}">Suscripciones</a>
+        <a th:href="@{/facturas}">Facturas</a>
+    </nav>
+    <div class="container">
+        <h1>Detalle de Suscripción</h1>
+
+        <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+        <div class="card">
+            <p><span class="label">Usuario:</span> <span th:text="${suscripcion.usuario.nombre + ' ' + suscripcion.usuario.apellido}"></span></p>
+            <p><span class="label">Plan Actual:</span> <span th:text="${suscripcion.plan.nombre}"></span></p>
+            <p><span class="label">Precio:</span> <span th:text="'€' + ${suscripcion.plan.precioMensual} + '/mes'"></span></p>
+            <p><span class="label">Estado:</span> <span th:text="${suscripcion.estado}"></span></p>
+            <p><span class="label">Fecha Inicio:</span> <span th:text="${suscripcion.fechaInicio}"></span></p>
+            <p><span class="label">Próxima Facturación:</span> <span th:text="${suscripcion.proximaFechaFacturacion}"></span></p>
+        </div>
+
+        <!-- Cambiar plan -->
+        <div class="card" th:if="${suscripcion.estado.name() == 'ACTIVA'}">
+            <h2>Cambiar Plan</h2>
+            <form th:action="@{/suscripciones/{id}/cambiar-plan(id=${suscripcion.id})}" method="post">
+                <select name="nuevoPlanId" required>
+                    <option value="">-- Seleccione nuevo plan --</option>
+                    <option th:each="plan : ${planes}"
+                            th:value="${plan.id}"
+                            th:text="${plan.nombre} + ' - €' + ${plan.precioMensual} + '/mes'"
+                            th:disabled="${plan.id == suscripcion.plan.id}">
+                    </option>
+                </select>
+                <button type="submit" class="btn btn-success">Cambiar Plan</button>
+            </form>
+
+            <br/>
+            <form th:action="@{/suscripciones/{id}/cancelar(id=${suscripcion.id})}" method="post"
+                  onsubmit="return confirm('¿Está seguro de cancelar la suscripción?')">
+                <button type="submit" class="btn btn-danger">Cancelar Suscripción</button>
+            </form>
+        </div>
+
+        <!-- Facturas -->
+        <div class="card">
+            <h2>Facturas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Concepto</th>
+                        <th>Monto</th>
+                        <th>Estado</th>
+                        <th>Emisión</th>
+                        <th>Vencimiento</th>
+                        <th>Prorrateo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="f : ${facturas}" th:classappend="${f.esProrrateo} ? 'prorrateo' : ''">
+                        <td th:text="${f.id}"></td>
+                        <td th:text="${f.concepto}"></td>
+                        <td th:text="'€' + ${f.monto}"></td>
+                        <td th:text="${f.estado}"></td>
+                        <td th:text="${f.fechaEmision}"></td>
+                        <td th:text="${f.fechaVencimiento}"></td>
+                        <td th:text="${f.esProrrateo} ? 'Sí' : 'No'"></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(facturas)}">
+                        <td colspan="7" style="text-align:center; color:#999;">No hay facturas</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <a th:href="@{/suscripciones}" class="btn">Volver</a>
+    </div>
+</body>
+</html>

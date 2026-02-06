@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Plan - Formulario</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        nav { background: #333; padding: 10px 20px; margin-bottom: 20px; }
+        nav a { color: white; text-decoration: none; margin-right: 20px; font-weight: bold; }
+        nav a:hover { text-decoration: underline; }
+        .container { max-width: 600px; margin: 0 auto; }
+        h1 { color: #333; }
+        .card { background: white; padding: 20px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .btn { display: inline-block; padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 14px; }
+        .btn:hover { background: #0056b3; }
+        .btn-success { background: #28a745; }
+        input, select { padding: 8px; margin: 5px 0 15px 0; border: 1px solid #ccc; border-radius: 4px; width: 100%; box-sizing: border-box; }
+        label { display: block; margin-top: 5px; font-weight: bold; color: #555; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/planes}">Planes</a>
+        <a th:href="@{/usuarios}">Usuarios</a>
+        <a th:href="@{/suscripciones}">Suscripciones</a>
+        <a th:href="@{/facturas}">Facturas</a>
+    </nav>
+    <div class="container">
+        <h1 th:text="${plan.id != null} ? 'Editar Plan' : 'Nuevo Plan'">Plan</h1>
+        <div class="card">
+            <form th:action="${plan.id != null} ? @{/planes/actualizar} : @{/planes}"
+                  th:object="${plan}" method="post">
+
+                <input type="hidden" th:field="*{id}" th:if="${plan.id != null}"/>
+
+                <label>Nombre:</label>
+                <input type="text" th:field="*{nombre}" placeholder="Ej: Basic, Premium, Enterprise" required/>
+
+                <label>Descripción:</label>
+                <input type="text" th:field="*{descripcion}" placeholder="Descripción del plan" required/>
+
+                <label>Precio Mensual (€):</label>
+                <input type="number" step="0.01" th:field="*{precioMensual}" placeholder="9.99" required/>
+
+                <label>Máximo de Usuarios:</label>
+                <input type="number" th:field="*{maxUsuarios}" placeholder="5" required/>
+
+                <label>Activo:</label>
+                <select th:field="*{activo}">
+                    <option value="true">Sí</option>
+                    <option value="false">No</option>
+                </select>
+
+                <br/>
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <a th:href="@{/planes}" class="btn">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
