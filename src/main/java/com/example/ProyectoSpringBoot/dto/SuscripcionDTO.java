@@ -31,6 +31,8 @@ public class SuscripcionDTO {
     
     private LocalDate fechaFin;
     
+    private LocalDate fechaProximoCobro;
+    
     @NotNull(message = "El estado es obligatorio")
     private EstadoSuscripcion estado;
     

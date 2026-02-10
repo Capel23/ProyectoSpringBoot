@@ -1,11 +1,16 @@
 package com.example.ProyectoSpringBoot.config;
 
+import com.example.ProyectoSpringBoot.entity.Perfil;
 import com.example.ProyectoSpringBoot.entity.Plan;
+import com.example.ProyectoSpringBoot.entity.Usuario;
+import com.example.ProyectoSpringBoot.enums.RolUsuario;
 import com.example.ProyectoSpringBoot.enums.TipoPlan;
 import com.example.ProyectoSpringBoot.repository.PlanRepository;
+import com.example.ProyectoSpringBoot.repository.UsuarioRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 
@@ -13,7 +18,7 @@ import java.math.BigDecimal;
 public class DataInitializer {
 
     @Bean
-    CommandLineRunner initDatabase(PlanRepository planRepository) {
+    CommandLineRunner initDatabase(PlanRepository planRepository, UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             // Solo crear datos si no existen
             if (planRepository.count() == 0) {
@@ -54,6 +59,28 @@ public class DataInitializer {
                 planRepository.save(enterprise);
 
                 System.out.println("✓ Datos de prueba cargados: 3 planes creados");
+            }
+
+            // Crear usuario admin si no existe
+            if (!usuarioRepository.existsByEmail("admin@saas.com")) {
+                Usuario admin = Usuario.builder()
+                        .email("admin@saas.com")
+                        .password(passwordEncoder.encode("admin123"))
+                        .activo(true)
+                        .emailVerificado(true)
+                        .rol(RolUsuario.ADMIN)
+                        .build();
+                
+                Perfil perfilAdmin = Perfil.builder()
+                        .nombre("Administrador")
+                        .apellidos("Sistema")
+                        .pais("ES")
+                        .usuario(admin)
+                        .build();
+                admin.setPerfil(perfilAdmin);
+                
+                usuarioRepository.save(admin);
+                System.out.println("✓ Usuario admin creado: admin@saas.com / admin123");
             }
         };
     }

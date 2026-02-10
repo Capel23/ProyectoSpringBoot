@@ -53,4 +53,19 @@ public class UsuarioRestController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    /**
+     * Endpoint de login - autentica email y password
+     */
+    @PostMapping("/login")
+    public ResponseEntity<UsuarioDTO> login(@RequestBody LoginRequest request) {
+        return usuarioService.login(request.email(), request.password())
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+    }
+
+    /**
+     * Record para request de login
+     */
+    public record LoginRequest(String email, String password) {}
 }

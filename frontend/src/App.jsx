@@ -17,10 +17,14 @@ function App() {
     setUserData(data);
   };
 
+  const handleLogout = () => {
+    setUserData(null);
+  };
+
   // Si no hay usuario logueado, mostrar Login
   // Si hay usuario logueado, mostrar Dashboard
   return userData ? (
-    <DashboardPage userData={userData} />
+    <DashboardPage userData={userData} onLogout={handleLogout} />
   ) : (
     <LoginPage onLogin={handleLogin} />
   );

@@ -1,5 +1,6 @@
 package com.example.ProyectoSpringBoot.entity;
 
+import com.example.ProyectoSpringBoot.enums.RolUsuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -43,6 +44,11 @@ public class Usuario {
     @Column(nullable = false)
     @Builder.Default
     private Boolean emailVerificado = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    @Builder.Default
+    private RolUsuario rol = RolUsuario.USER;
 
     @CreatedDate
     @Column(name = "fecha_creacion", nullable = false, updatable = false)

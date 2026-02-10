@@ -5,8 +5,8 @@
 
 -- Crear la base de datos si no existe
 CREATE DATABASE IF NOT EXISTS saas_platform
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
 
 USE saas_platform;
 

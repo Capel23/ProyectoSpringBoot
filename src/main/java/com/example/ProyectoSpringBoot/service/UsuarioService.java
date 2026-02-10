@@ -3,12 +3,14 @@ package com.example.ProyectoSpringBoot.service;
 import com.example.ProyectoSpringBoot.dto.UsuarioDTO;
 import com.example.ProyectoSpringBoot.entity.Perfil;
 import com.example.ProyectoSpringBoot.entity.Usuario;
+import com.example.ProyectoSpringBoot.enums.RolUsuario;
 import com.example.ProyectoSpringBoot.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -79,6 +81,25 @@ public class UsuarioService {
         return usuarioRepository.existsByEmail(email);
     }
 
+    /**
+     * Autenticar usuario por email y password
+     */
+    public Optional<UsuarioDTO> login(String email, String password) {
+        return usuarioRepository.findByEmail(email)
+                .filter(usuario -> passwordEncoder.matches(password, usuario.getPassword()))
+                .map(usuario -> {
+                    // Actualizar último acceso
+                    usuario.setUltimoAcceso(LocalDateTime.now());
+                    usuarioRepository.save(usuario);
+                    return toDTO(usuario);
+                });
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<UsuarioDTO> findByEmail(String email) {
+        return usuarioRepository.findByEmail(email).map(this::toDTO);
+    }
+
     // ===== CONVERSIONES Entity <-> DTO =====
 
     private UsuarioDTO toDTO(Usuario entity) {
@@ -87,8 +108,18 @@ public class UsuarioService {
                 .email(entity.getEmail())
                 .activo(entity.getActivo())
                 .emailVerificado(entity.getEmailVerificado())
+                .rol(entity.getRol())
                 .fechaCreacion(entity.getFechaCreacion())
                 .ultimoAcceso(entity.getUltimoAcceso());
+        
+        // Obtener suscripción activa
+        if (entity.getSuscripciones() != null && !entity.getSuscripciones().isEmpty()) {
+            entity.getSuscripciones().stream()
+                    .filter(s -> s.getEstado() != null && 
+                            (s.getEstado().name().equals("ACTIVA") || s.getEstado().name().equals("TRIAL")))
+                    .findFirst()
+                    .ifPresent(sus -> builder.suscripcionId(sus.getId()));
+        }
         
         // Datos del perfil
         if (entity.getPerfil() != null) {

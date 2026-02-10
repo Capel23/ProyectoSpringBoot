@@ -1,5 +1,6 @@
 package com.example.ProyectoSpringBoot.dto;
 
+import com.example.ProyectoSpringBoot.enums.RolUsuario;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -27,9 +28,14 @@ public class UsuarioDTO {
     
     private Boolean emailVerificado;
     
+    private RolUsuario rol;
+    
     private LocalDateTime fechaCreacion;
     
     private LocalDateTime ultimoAcceso;
+    
+    // ID de la suscripción activa
+    private Long suscripcionId;
     
     // Datos del Perfil embebidos
     private String nombre;
