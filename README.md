@@ -1,54 +1,48 @@
-# Plataforma SaaS
+# Plataforma SaaS - Spring Boot + React
 
-Sistema de gestion de usuarios y planes de suscripcion.
+Sistema completo de gestión de suscripciones con autenticación, facturación automática y panel de administración.
 
-## Tecnologias
+## 🚀 Tecnologías
 
-- **Backend:** Spring Boot 3.2, Spring Data JPA, Hibernate Envers
+- **Backend:** Spring Boot 3.2, JPA, Hibernate Envers, MySQL
 - **Frontend:** React 18, Vite, Tailwind CSS
-- **Base de datos:** H2 (desarrollo) / MySQL (produccion)
+- **Seguridad:** BCrypt, role-based access control
 
-## Diagrama E-R
+## ⚡ Características
 
-```
-Usuario (1) -----> (1) Perfil
-   |
-   | 1:N
-   v
-Suscripcion (N) <----- (1) Plan
-   |                       - BASIC
-   | 1:N                   - PREMIUM
-   v                       - ENTERPRISE
-Factura
+- ✅ Autenticación con roles (Admin/Usuario)
+- ✅ Gestión de suscripciones y ciclo de vida
+- ✅ Facturación automática con impuestos
+- ✅ Panel de administración con auditoría
+- ✅ 3 planes: Básico (€9.99), Premium (€29.99), Empresarial (€99.99)
 
-MetodoPago (Herencia SINGLE_TABLE)
-   |-- TarjetaCredito
-   |-- PayPal
-   |-- Transferencia
-```
+## 📦 Instalación
 
-### Relaciones
-- Usuario - Perfil: OneToOne
-- Usuario - Suscripcion: OneToMany
-- Suscripcion - Plan: ManyToOne
-- Suscripcion - Factura: OneToMany
-- Usuario - MetodoPago: OneToMany
-
-## Instalacion
-
-### Backend
+### 1. Configurar MySQL
 ```bash
-.\mvnw.cmd spring-boot:run
+# Iniciar XAMPP con MySQL en puerto 3306
+# Base de datos: saas_platform (se crea automáticamente)
+```
+
+### 2. Backend
+```bash
+mvn spring-boot:run
 ```
 http://localhost:8080
 
-### Frontend
+### 3. Frontend
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-http://localhost:5173
+http://localhost:5174
+
+## 🔐 Credenciales
+
+**Admin:** `admin@saas.com` / `admin123`
+
+**Usuarios:** Registrarse en la aplicación
 
 ## Perfiles de BD
 
